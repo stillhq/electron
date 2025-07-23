@@ -854,6 +854,16 @@ void BaseWindow::SetBackgroundMaterial(const std::string& material) {
   window_->SetBackgroundMaterial(material);
 }
 
+#if BUILDFLAG(IS_LINUX)
+void BaseWindow::SetWMClass(const std::string& wm_class) {
+  window_->SetWMClass(wm_class);
+}
+
+std::string BaseWindow::GetWMClass() const {
+  return window_->GetWMClass();
+}
+#endif
+
 #if BUILDFLAG(IS_MAC)
 std::string BaseWindow::GetAlwaysOnTopLevel() const {
   return window_->GetAlwaysOnTopLevel();
@@ -1256,6 +1266,10 @@ void BaseWindow::BuildPrototype(v8::Isolate* isolate,
       .SetProperty("excludedFromShownWindowsMenu",
                    &BaseWindow::IsExcludedFromShownWindowsMenu,
                    &BaseWindow::SetExcludedFromShownWindowsMenu)
+#endif
+#if BUILDFLAG(IS_LINUX)
+      .SetMethod("setWMClass", &BaseWindow::SetWMClass)
+      .SetMethod("getWMClass", &BaseWindow::GetWMClass)
 #endif
       .SetMethod("setAutoHideMenuBar", &BaseWindow::SetAutoHideMenuBar)
       .SetMethod("isMenuBarAutoHide", &BaseWindow::IsMenuBarAutoHide)

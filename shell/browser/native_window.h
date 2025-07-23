@@ -292,6 +292,11 @@ class NativeWindow : public base::SupportsUserData,
 
   virtual void SetGTKDarkThemeEnabled(bool use_dark_theme) {}
 
+#if BUILDFLAG(IS_LINUX)
+  virtual void SetWMClass(const std::string& wm_class) {}
+  virtual std::string GetWMClass() const { return ""; }
+#endif
+
   base::WeakPtr<NativeWindow> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }

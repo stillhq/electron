@@ -197,6 +197,11 @@ class NativeWindowClientView : public views::ClientView {
 NativeWindowViews::NativeWindowViews(const gin_helper::Dictionary& options,
                                      NativeWindow* parent)
     : NativeWindow(options, parent) {
+#if BUILDFLAG(IS_LINUX)
+  if (std::string val; options.Get(options::kWMClass, &val))
+    wm_class_ = val;
+#endif
+
   if (std::string val; options.Get(options::kTitle, &val))
     SetTitle(val);
 
@@ -288,8 +293,13 @@ NativeWindowViews::NativeWindowViews(const gin_helper::Dictionary& options,
   // Set WM_WINDOW_ROLE.
   params.wm_role_name = "browser-window";
   // Set WM_CLASS.
-  params.wm_class_name = base::ToLowerASCII(name);
-  params.wm_class_class = name;
+  if (!wm_class_.empty()) {
+    params.wm_class_name = base::ToLowerASCII(wm_class_);
+    params.wm_class_class = wm_class_;
+  } else {
+    params.wm_class_name = base::ToLowerASCII(name);
+    params.wm_class_class = name;
+  }
   // Set Wayland application ID.
   params.wayland_app_id = platform_util::GetXdgAppId();
 
@@ -513,6 +523,17 @@ void NativeWindowViews::SetGTKDarkThemeEnabled(bool use_dark_theme) {
   }
 #endif
 }
+
+#if BUILDFLAG(IS_LINUX)
+void NativeWindowViews::SetWMClass(const std::string& wm_class) {
+  wm_class_ = wm_class;
+  // TODO: Update the window properties if the window is already mapped
+}
+
+std::string NativeWindowViews::GetWMClass() const {
+  return wm_class_;
+}
+#endif
 
 void NativeWindowViews::SetContentView(views::View* view) {
   if (content_view()) {

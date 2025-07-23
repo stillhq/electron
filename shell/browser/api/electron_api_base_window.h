@@ -209,6 +209,11 @@ class BaseWindow : public gin_helper::TrackableObject<BaseWindow>,
   void SetHiddenInMissionControl(bool hidden);
 #endif
 
+#if BUILDFLAG(IS_LINUX)
+  void SetWMClass(const std::string& wm_class);
+  std::string GetWMClass() const;
+#endif
+
   void SetTouchBar(std::vector<gin_helper::PersistentDictionary> items);
   void RefreshTouchBarItem(const std::string& item_id);
   void SetEscapeTouchBarItem(gin_helper::PersistentDictionary item);

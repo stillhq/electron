@@ -98,6 +98,9 @@ inline constexpr std::string_view kBackgroundColor = "backgroundColor";
 // Whether the window should have a shadow.
 inline constexpr std::string_view kHasShadow = "hasShadow";
 
+// WM_CLASS for X11/Wayland windows on Linux.
+inline constexpr std::string_view kWMClass = "wmClass";
+
 // Browser window opacity
 inline constexpr std::string_view kOpacity = "opacity";
 

@@ -1459,8 +1459,28 @@ Passing `null` will reset the position to default.
 
 #### `win.getWindowButtonPosition()` _macOS_
 
-Returns `Point | null` - The custom position for the traffic light buttons in
-frameless window, `null` will be returned when there is no custom position.
+Returns `Point | null` - The current position for the traffic light buttons in frameless window.
+
+#### `win.setWMClass(wmClass)` _Linux_
+
+* `wmClass` string
+
+Sets the WM_CLASS property for X11 windows and app ID for Wayland windows. This property can be used by window managers for identification and grouping of windows.
+
+```js
+const { BaseWindow } = require('electron')
+
+const win = new BaseWindow({
+  wmClass: 'my-electron-app'
+})
+
+// Or set it at runtime
+win.setWMClass('my-custom-class')
+```
+
+#### `win.getWMClass()` _Linux_
+
+Returns `string` - The current WM_CLASS or Wayland app ID of the window.
 
 #### `win.setTouchBar(touchBar)` _macOS_
 

@@ -146,6 +146,11 @@ class NativeWindowViews : public NativeWindow,
 
   void SetGTKDarkThemeEnabled(bool use_dark_theme) override;
 
+#if BUILDFLAG(IS_LINUX)
+  void SetWMClass(const std::string& wm_class) override;
+  std::string GetWMClass() const override;
+#endif
+
   content::DesktopMediaID GetDesktopMediaID() const override;
   gfx::AcceleratedWidget GetAcceleratedWidget() const override;
   NativeWindowHandle GetNativeWindowHandle() const override;
@@ -351,6 +356,10 @@ class NativeWindowViews : public NativeWindow,
   gfx::Size widget_size_;
   double opacity_ = 1.0;
   bool widget_destroyed_ = false;
+
+#if BUILDFLAG(IS_LINUX)
+  std::string wm_class_;
+#endif
 };
 
 }  // namespace electron
